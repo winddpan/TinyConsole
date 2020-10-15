@@ -28,24 +28,25 @@ open class TinyConsoleController: UIViewController {
         TinyConsoleViewController()
     }()
 
-    private lazy var window: UIWindow = {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.windowLevel = .statusBar
-        window.rootViewController = self
-        return window
-    }()
+    private var window: UIWindow?
 
     private func updateHeightConstraint() {
         let keyWindow = UIApplication.shared.keyWindow
         if consoleWindowMode == .collapsed {
             keyWindow?.frame = UIScreen.main.bounds
-            window.removeFromSuperview()
+            window?.isHidden = true
+            window = nil
         } else {
             let windowHeight = consoleHeight
+
+            let window = UIWindow(frame: UIScreen.main.bounds)
+            window.windowLevel = .statusBar
+            window.rootViewController = self
             window.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - windowHeight, width: UIScreen.main.bounds.width, height: windowHeight)
             window.makeKeyAndVisible()
             view.layoutIfNeeded()
             window.resignKey()
+            self.window = window
 
             keyWindow?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - windowHeight)
             keyWindow?.makeKeyAndVisible()
