@@ -30,6 +30,7 @@ open class TinyConsoleController: UIViewController {
 
     private lazy var window: UIWindow = {
         let window = UIWindow(frame: UIScreen.main.bounds)
+        window.windowLevel = .statusBar
         window.rootViewController = self
         return window
     }()
