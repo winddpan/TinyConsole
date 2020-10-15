@@ -21,9 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationController(rootViewController: MainViewController())
         ]
         
-        window?.rootViewController = TinyConsole.createViewController(rootViewController: tabBarController)
+        window?.rootViewController = tabBarController //TinyConsole.createViewController(rootViewController: tabBarController)
         window?.makeKeyAndVisible()
-        
+        window?.clipsToBounds = true
+
         return true
     }
 }

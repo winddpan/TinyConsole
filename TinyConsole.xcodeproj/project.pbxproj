@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4078E18D25384897002F6995 /* UnselectableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4078E18C25384897002F6995 /* UnselectableTextView.swift */; };
 		450284DE1DFD878C00922381 /* MainTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450284DD1DFD878C00922381 /* MainTableData.swift */; };
 		455463482341729800F5B78F /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455463472341729800F5B78F /* UIViewControllerExtensions.swift */; };
 		4554634A2341773600F5B78F /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455463492341773600F5B78F /* NSAttributedStringExtensions.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4078E18C25384897002F6995 /* UnselectableTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnselectableTextView.swift; sourceTree = "<group>"; };
 		450284DD1DFD878C00922381 /* MainTableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableData.swift; sourceTree = "<group>"; };
 		455463472341729800F5B78F /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		455463492341773600F5B78F /* NSAttributedStringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtensions.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				4585FDDB1DEC557000DDF5EB /* TinyConsole.swift */,
 				4585FDD91DEC552600DDF5EB /* TinyConsoleController.swift */,
 				4585FDDD1DEC559D00DDF5EB /* TinyConsoleViewController.swift */,
+				4078E18C25384897002F6995 /* UnselectableTextView.swift */,
 				45A3359F23416DF800F96AFA /* Extensions */,
 				4585FDD41DEC54D300DDF5EB /* Supporting Files */,
 			);
@@ -287,6 +290,7 @@
 				4554634A2341773600F5B78F /* NSAttributedStringExtensions.swift in Sources */,
 				4585FDDE1DEC559D00DDF5EB /* TinyConsoleViewController.swift in Sources */,
 				45A3359A23412FB700F96AFA /* UIViewExtensions.swift in Sources */,
+				4078E18D25384897002F6995 /* UnselectableTextView.swift in Sources */,
 				45A3359C23416D5A00F96AFA /* UIAlertActionExtensions.swift in Sources */,
 				4585FDDC1DEC557000DDF5EB /* TinyConsole.swift in Sources */,
 				4554634C23418E6F00F5B78F /* UIButtonExtensions.swift in Sources */,
@@ -442,7 +446,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/TinyConsole/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MARKETING_VERSION = 2.0.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -503,7 +507,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/TinyConsole/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MARKETING_VERSION = 2.0.1;
 				MTL_ENABLE_DEBUG_INFO = NO;

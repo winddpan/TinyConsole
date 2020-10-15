@@ -19,34 +19,40 @@ open class TinyConsoleController: UIViewController {
         case collapsed
         case expanded
     }
-    
-    var rootViewController: UIViewController {
-        didSet {
-            setupViewControllers()
-            setupConstraints()
-        }
-    }
-    
+
     // MARK: - Private Properties
-    
+
     private var animationDuration = 0.25
-    
+
     private var consoleViewController: TinyConsoleViewController = {
         TinyConsoleViewController()
     }()
 
-    private lazy var consoleViewHeightConstraint: NSLayoutConstraint? = {
-        return consoleViewController.view.heightAnchor.constraint(equalToConstant: 0)
+    private lazy var window: UIWindow = {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = self
+        return window
     }()
-    
+
     private func updateHeightConstraint() {
-        consoleViewHeightConstraint?.isActive = false
-        consoleViewHeightConstraint?.constant = consoleWindowMode == .collapsed ? 0 : consoleHeight
-        consoleViewHeightConstraint?.isActive = true
+        let keyWindow = UIApplication.shared.keyWindow
+        if consoleWindowMode == .collapsed {
+            keyWindow?.frame = UIScreen.main.bounds
+            window.removeFromSuperview()
+        } else {
+            let windowHeight = consoleHeight
+            window.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - windowHeight, width: UIScreen.main.bounds.width, height: windowHeight)
+            window.makeKeyAndVisible()
+            view.layoutIfNeeded()
+            window.resignKey()
+
+            keyWindow?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - windowHeight)
+            keyWindow?.makeKeyAndVisible()
+        }
     }
-    
+
     // MARK: - Public Properties
-    
+
     public var consoleHeight: CGFloat = 200 {
         didSet {
             UIView.animate(withDuration: animationDuration) {
@@ -55,7 +61,7 @@ open class TinyConsoleController: UIViewController {
             }
         }
     }
-    
+
     public var consoleWindowMode: WindowMode = .collapsed {
         didSet {
             updateHeightConstraint()
@@ -65,33 +71,30 @@ open class TinyConsoleController: UIViewController {
     // MARK: - Initializer
 
     init() {
-        rootViewController = UIViewController()
         super.init(nibName: nil, bundle: nil)
     }
 
     public required init?(coder aDecoder: NSCoder) {
         assertionFailure("Interface Builder is not supported")
-        rootViewController = UIViewController()
         super.init(coder: aDecoder)
     }
 
     // MARK: - Public Methods
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewControllers()
-        setupConstraints()
     }
 
-    open override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+    override open func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             toggleWindowMode()
         }
     }
 
     // MARK: - Private Methods
-    
+
     internal func toggleWindowMode() {
         consoleWindowMode = consoleWindowMode == .collapsed ? .expanded : .collapsed
         UIView.animate(withDuration: animationDuration) {
@@ -101,23 +104,20 @@ open class TinyConsoleController: UIViewController {
 
     private func setupViewControllers() {
         removeAllChildren()
-        
+
         addChild(consoleViewController)
         view.addSubview(consoleViewController.view)
+
+        consoleViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        consoleViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        consoleViewController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        consoleViewController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        if #available(iOS 11.0, *) {
+            consoleViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        } else {
+            consoleViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
+
         consoleViewController.didMove(toParent: self)
-
-        addChild(rootViewController)
-        view.addSubview(rootViewController.view)
-        rootViewController.didMove(toParent: self)
-    }
-
-    private func setupConstraints() {
-        rootViewController.view.attach(anchor: .top, to: view)
-
-        consoleViewController.view.attach(anchor: .bottom, to: view)
-        consoleViewHeightConstraint?.isActive = true
-
-        rootViewController.view.bottomAnchor.constraint(equalTo: consoleViewController.view.topAnchor).isActive = true
     }
 }
-

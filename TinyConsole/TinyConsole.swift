@@ -10,7 +10,7 @@ import UIKit
 
 open class TinyConsole {
     public static var shared = TinyConsole()
-    var textView: UITextView?
+    private(set) var textView: UITextView? = UITextView.console
     var consoleController: TinyConsoleController
     
     static var textAppearance: [NSAttributedString.Key: Any] = {
@@ -35,16 +35,6 @@ open class TinyConsole {
         return dateFormatter.string(from: Date())
     }
 
-    // MARK: - Create View Contoller
-    public static func createViewController(rootViewController: UIViewController) -> UIViewController {
-        set(rootViewController: rootViewController)
-        return shared.consoleController
-    }
-
-    public static func set(rootViewController: UIViewController) {
-        shared.consoleController.rootViewController = rootViewController
-    }
-    
     // MARK: - Actions
 
     public static func scrollToBottom() {
@@ -93,6 +83,7 @@ open class TinyConsole {
             newText.append(timeStamped)
             
             textView.attributedText = newText
+            textView.layoutIfNeeded()
             scrollToBottom()
         }
     }

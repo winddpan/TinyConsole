@@ -6,8 +6,8 @@
 //
 //
 
-import UIKit
 import MessageUI
+import UIKit
 
 /// This UIViewController
 class TinyConsoleViewController: UIViewController {
@@ -18,45 +18,55 @@ class TinyConsoleViewController: UIViewController {
         stackView.spacing = 4
         return stackView
     }()
-    
+
     private let consoleTextView = UITextView.console
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        TinyConsole.shared.textView = consoleTextView
         view.addSubview(consoleTextView)
         view.addSubview(stackView)
         setupConstraints()
-        
-        let customTextButton = UIButton(type: .system)
-        customTextButton.setTitle("Text", for: .normal)
-        customTextButton.addTarget(self, action: #selector(customText(sender:)), for: .touchUpInside)
-        customTextButton.applyMiniStyle()
-        stackView.addArrangedSubview(customTextButton)
-        
+
+        /*
+         let customTextButton = UIButton(type: .system)
+         customTextButton.setTitle("Text", for: .normal)
+         customTextButton.addTarget(self, action: #selector(customText(sender:)), for: .touchUpInside)
+         customTextButton.applyMiniStyle()
+         stackView.addArrangedSubview(customTextButton)
+          */
+
         let lineButton = UIButton(type: .system)
         lineButton.setTitle("Line", for: .normal)
         lineButton.addTarget(self, action: #selector(addLine(sender:)), for: .touchUpInside)
         lineButton.applyMiniStyle()
         stackView.addArrangedSubview(lineButton)
-        
+
         let clearButton = UIButton(type: .system)
-        clearButton.setTitle("More", for: .normal)
-        clearButton.addTarget(self, action: #selector(additionalActions(sender:)), for: .touchUpInside)
+        clearButton.setTitle("Clear", for: .normal)
+        clearButton.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         clearButton.applyMiniStyle()
         stackView.addArrangedSubview(clearButton)
+        
+//        let clearButton = UIButton(type: .system)
+//        clearButton.setTitle("More", for: .normal)
+//        clearButton.addTarget(self, action: #selector(additionalActions(sender:)), for: .touchUpInside)
+//        clearButton.applyMiniStyle()
+//        stackView.addArrangedSubview(clearButton)
     }
 
     private func setupConstraints() {
-        consoleTextView.translatesAutoresizingMaskIntoConstraints = false
-        consoleTextView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        consoleTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-        view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: consoleTextView.rightAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: consoleTextView.bottomAnchor).isActive = true
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
-        view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: stackView.rightAnchor, constant: 8).isActive = true
+        if #available(iOS 11.0, *) {
+            consoleTextView.translatesAutoresizingMaskIntoConstraints = false
+            consoleTextView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            consoleTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+
+            view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: consoleTextView.rightAnchor).isActive = true
+            view.bottomAnchor.constraint(equalTo: consoleTextView.bottomAnchor).isActive = true
+
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
+            view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: stackView.rightAnchor, constant: 8).isActive = true
+        }
     }
 
     @objc func customText(sender: AnyObject) {
@@ -77,6 +87,30 @@ class TinyConsoleViewController: UIViewController {
 
     @objc func addLine(sender: AnyObject) {
         TinyConsole.addLine()
+    }
+    
+    @objc func clear(sender: AnyObject) {
+        TinyConsole.clear()
+        TinyConsole.scrollToBottom()
+    }
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+            if let nav = base as? UINavigationController {
+                return topViewController(base: nav.visibleViewController)
+            }
+            if let tab = base as? UITabBarController {
+                if let selected = tab.selectedViewController {
+                    return topViewController(base: selected)
+                }
+            }
+            if let presented = base?.presentedViewController {
+                return topViewController(base: presented)
+            }
+            return base
+        }
+
+        topViewController()?.present(viewControllerToPresent, animated: flag, completion: completion)
     }
 }
 

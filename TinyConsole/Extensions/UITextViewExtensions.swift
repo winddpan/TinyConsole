@@ -9,18 +9,22 @@ import Foundation
 
 internal extension UITextView {
     static let console: UITextView = {
-        let textView = UITextView()
+        let textView = UnselectableTextView()
         textView.backgroundColor = UIColor.black
         textView.isEditable = false
         textView.alwaysBounceVertical = true
+        textView.contentInset = .zero
+        if #available(iOS 11.0, *) {
+            textView.contentInsetAdjustmentBehavior = .never
+        }
         return textView
     }()
-    
+
     func clear() {
         text = ""
     }
-    
+
     func boundsHeightLessThenContentSizeHeight() -> Bool {
-        return bounds.height < contentSize.height
+        return frame.height < contentSize.height
     }
 }
